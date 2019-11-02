@@ -1,19 +1,7 @@
 import React from "react";
-import Loadable from "react-loadable";
 //eslint-disable-next-line
 import { BrowserRouter as Router, Route } from "react-router-dom";
 
-export const Loading = props => {
-  if (props.error) {
-    return <div>Error! {props.error}</div>;
-  } else {
-    return (
-      <div>
-        <h3>Carregando...</h3>
-      </div>
-    );
-  }
-};
 export const RouteWithSubRoutes = route => (
   <Route
     exact={route.exact}
@@ -26,15 +14,9 @@ export const RouteWithSubRoutes = route => (
     }}
   />
 );
-const Bairros = Loadable({
-  loader: () => import("../views/Bairros"),
-  loading: Loading
-});
+import Bairros from "../views/Bairros";
 
-const Crime = Loadable({
-  loader: () => import("../views/Crime"),
-  loading: Loading
-});
+import Crime from "../views/Crime";
 
 export const routes = [
   {

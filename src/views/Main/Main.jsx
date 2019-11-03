@@ -1,10 +1,12 @@
 import React from "react";
-import axios from "axios";
 import { Grid, Paper, Tabs, Tab, Typography, Box } from "@material-ui/core";
-import { BrowserRouter as Router, Switch } from "react-router-dom";
-import { RouteWithSubRoutes, routes } from "../../Router/Routes";
 import PropTypes from "prop-types";
 import { makeStyles } from "@material-ui/core/styles";
+import Image from "../../assets/background.png";
+
+import Quadrilhas from "../Quadrilhas";
+import Bairros from "../Bairros";
+import Criminosos from "../Criminosos";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -44,10 +46,15 @@ const useStyles = makeStyles(theme => ({
     width: 5,
     backgroundColor: "#455196"
   },
+  bolso: {
+    height: 300,
+    backgroundImage: `url(${Image})`,
+    backgroundRepeat: "no-repeat",
+    backgroundSize: "cover"
+  },
   back: {
-    width: "100vw",
-    height: 250,
-    backgroundColor: "#544ea2",
+    backgroundColor: "#455196",
+    height: 200,
     position: "absolute",
     top: 0,
     zIndex: -1,
@@ -88,29 +95,10 @@ const useStyles = makeStyles(theme => ({
 
 const Main = props => {
   const classes = useStyles();
-  let [nome, setNome] = React.useState("");
-  let [cpf, setCpf] = React.useState("");
   let [value, setValue] = React.useState(0);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
-  };
-
-  const chupacu = () => {
-    var a = {
-      nome,
-      cpf
-    };
-    axios
-      .post("http://localhost:8080/criminosos/", a, {
-        mode: "no-cors",
-        headers: {
-          "Content-Type": "application/json"
-        }
-      })
-      .then(aaa => {
-        console.log(aaa);
-      });
   };
 
   return (
@@ -128,79 +116,37 @@ const Main = props => {
               className={classes.tabs}
               classes={{ indicator: classes.bigIndicator }}
             >
-              <Tab label="Tab1" {...a11yProps(0)} />
-              <Tab label="Tab2" {...a11yProps(1)} />
-              <Tab label="Tab3" {...a11yProps(2)} />
-              <Tab label="Tab4" {...a11yProps(3)} />
+              <Tab
+                label="Cadastro e Listagem de Criminosos"
+                {...a11yProps(0)}
+              />
+              <Tab
+                label="Cadastro e Listagem de Quadrilhas"
+                {...a11yProps(1)}
+              />
+              <Tab label="Cadastro e Listagem de Bairros" {...a11yProps(2)} />
+              <Tab label="Cadastro e Listagem de Crimes" {...a11yProps(3)} />
+              <Tab label="Mito" {...a11yProps(3)} />
             </Tabs>
             <div className={classes.content}>
               <TabPanel value={value} index={0}>
-                <Grid container>
-                  Cupidatat mollit fugiat consequat reprehenderit. Dolore
-                  consequat duis ullamco quis ex culpa aliqua voluptate velit ut
-                  irure. Ex quis excepteur consequat irure laborum elit
-                  consectetur commodo amet sit quis sint minim. Ullamco
-                  consequat officia ea excepteur ea dolor proident pariatur
-                  adipisicing. Esse aute deserunt id tempor sit excepteur
-                  consequat minim. Commodo aliqua fugiat qui sit dolore
-                  voluptate officia dolore ea esse eu.
-                </Grid>
+                <Criminosos />
               </TabPanel>
               <TabPanel value={value} index={1}>
-                <Grid container>
-                  Officia pariatur adipisicing non minim esse laboris est in
-                  nulla enim consequat aute.
-                </Grid>
+                <Quadrilhas />
               </TabPanel>
               <TabPanel value={value} index={2}>
-                <Grid container>
-                  Adipisicing ut quis ut esse laborum aute laboris dolor elit
-                  exercitation.
-                </Grid>
+                <Bairros />
               </TabPanel>
-              <TabPanel value={value} index={3}>
-                <Grid container>
-                  Labore ad tempor tempor excepteur cupidatat. Reprehenderit et
-                  voluptate laborum commodo magna minim laboris est ad irure
-                  quis amet proident id. Sint pariatur fugiat labore nostrud
-                  nisi dolore enim. Id non ea magna laborum est occaecat sunt
-                  nostrud aliquip esse.r
-                </Grid>
+              <TabPanel value={value} index={3}></TabPanel>
+              <TabPanel value={value} index={4}>
+                <Grid
+                  container
+                  justify="center"
+                  className={classes.bolso}
+                ></Grid>
               </TabPanel>
             </div>
-            {/* <form action="http://localhost:8080/criminosos" method="POST"> */}
-            {/* <input
-              value={nome}
-              onChange={e => {
-                setNome(e.target.value);
-              }}
-            ></input>
-            <input
-              value={cpf}
-              onChange={e => {
-                setCpf(e.target.value);
-              }}
-            ></input>
-            <button onClick={chupacu} type="button">
-              Testando
-            </button> */}
-            {/* </form> */}
-            {/* <form
-              action="http://localhost:8080/criminosos"
-              method="POST"
-              encType="application/json"
-            >
-              <input name="nome"></input>
-              <input name="cpf"></input>
-              <button type="submit">Testando</button>
-            </form> */}
-            {/* <Router> */}
-            {/* <Switch>
-              {routes.map((route, i) => {
-                return <RouteWithSubRoutes key={i} {...route} />;
-              })}
-            </Switch> */}
-            {/* </Router> */}
           </Paper>
         </Grid>
       </Grid>

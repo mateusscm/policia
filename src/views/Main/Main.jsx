@@ -1,9 +1,18 @@
 import React from "react";
-import { Grid, Paper, Tabs, Tab, Typography, Box } from "@material-ui/core";
+import {
+  Grid,
+  Paper,
+  Tabs,
+  Tab,
+  Typography,
+  Box,
+  Fab
+} from "@material-ui/core";
 import PropTypes from "prop-types";
 import { makeStyles } from "@material-ui/core/styles";
 import Image from "../../assets/background.png";
-
+import { MdMenu } from "react-icons/md";
+import clsx from "clsx";
 import Quadrilhas from "../Quadrilhas";
 import Bairros from "../Bairros";
 import Criminosos from "../Criminosos";
@@ -20,7 +29,9 @@ function TabPanel(props) {
       aria-labelledby={`vertical-tab-${index}`}
       {...other}
     >
-      <Box p={3}>{children}</Box>
+      <Box p={3} style={{ height: "100%", padding: 0 }}>
+        {children}
+      </Box>
     </Typography>
   );
 }
@@ -40,11 +51,36 @@ function a11yProps(index) {
 
 const useStyles = makeStyles(theme => ({
   tabs: {
-    borderRight: `1px solid ${theme.palette.divider}`
+    borderRight: `1px solid ${theme.palette.divider}`,
+    width: 200,
+    whiteSpace: "nowrap",
+    transition: theme.transitions.create("width", {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.enteringScreen
+    }),
+    [theme.breakpoints.down("sm")]: {
+      position: "absolute",
+      backgroundColor: "white",
+      zIndex: 10,
+      height: "100%",
+      width: "100%"
+    }
+  },
+  noneWidth: {
+    overflowX: "hidden",
+    transition: theme.transitions.create("width", {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.leavingScreen
+    }),
+    width: 0,
+    [theme.breakpoints.down("sm")]: {
+      width: theme.spacing.unit * 0,
+      marginLeft: theme.spacing.unit * 0
+    }
   },
   bigIndicator: {
     width: 5,
-    backgroundColor: "#455196"
+    backgroundColor: "black"
   },
   bolso: {
     height: 300,
@@ -76,26 +112,42 @@ const useStyles = makeStyles(theme => ({
     }
   },
   paper: {
-    height: "calc(100vh - 130px)",
+    minHeight: "calc(100vh - 130px)",
+    height: "auto",
     display: "flex",
+    marginBottom: 30,
     [theme.breakpoints.down("sm")]: {
-      height: "calc(100vh - 80px)"
+      minHeight: "calc(100vh - 80px)"
     },
     [theme.breakpoints.down("xs")]: {
-      height: "calc(100vh - 30px)"
+      minHeight: "calc(100vh - 30px)"
     }
   },
   content: {
     width: "calc(100% - 160px)",
+    zIndex: 1,
     [theme.breakpoints.down("xs")]: {
       width: "calc(100% - 48px)"
     }
+  },
+  contentClose: {
+    width: "100%",
+    zIndex: 1
+  },
+  individualTab: {
+    minWidth: 0,
+    maxWidth: "100%"
   }
 }));
 
 const Main = props => {
   const classes = useStyles();
   let [value, setValue] = React.useState(0);
+  let [expanded, setExpanded] = React.useState(false);
+
+  const handleExpandClick = () => {
+    setExpanded(!expanded);
+  };
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -106,40 +158,68 @@ const Main = props => {
       <Grid container className={classes.back}></Grid>
       <Grid container justify="center" className={classes.mainGrid}>
         <Grid item xs={11} sm={10} md={8}>
-          <Paper elevation={8} className={classes.paper}>
+          <Paper
+            elevation={8}
+            className={clsx(classes.paper)}
+            style={{ position: "relative" }}
+          >
             <Tabs
               orientation="vertical"
               variant="scrollable"
               value={value}
               onChange={handleChange}
               aria-label="Vertical tabs example"
-              className={classes.tabs}
+              className={clsx(classes.tabs, !expanded && classes.noneWidth)}
               classes={{ indicator: classes.bigIndicator }}
             >
               <Tab
-                label="Cadastro e Listagem de Criminosos"
+                style={{ marginTop: 48 }}
+                className={classes.individualTab}
+                label="Criminosos"
                 {...a11yProps(0)}
               />
               <Tab
-                label="Cadastro e Listagem de Quadrilhas"
+                className={classes.individualTab}
+                label="Quadrilhas"
                 {...a11yProps(1)}
               />
-              <Tab label="Cadastro e Listagem de Bairros" {...a11yProps(2)} />
-              <Tab label="Cadastro e Listagem de Crimes" {...a11yProps(3)} />
-              <Tab label="Mito" {...a11yProps(3)} />
+              <Tab
+                className={classes.individualTab}
+                label="Bairros"
+                {...a11yProps(2)}
+              />
+              <Tab
+                className={classes.individualTab}
+                label="Crimes"
+                {...a11yProps(3)}
+              />
+              <Tab
+                className={classes.individualTab}
+                label="Mito"
+                {...a11yProps(3)}
+              />
             </Tabs>
-            <div className={classes.content}>
-              <TabPanel value={value} index={0}>
+            <div
+              className={clsx(
+                classes.contentClose,
+                !expanded && classes.content
+              )}
+            >
+              <TabPanel value={value} index={0} style={{ height: "100%" }}>
                 <Criminosos />
               </TabPanel>
-              <TabPanel value={value} index={1}>
+              <TabPanel value={value} index={1} style={{ height: "100%" }}>
                 <Quadrilhas />
               </TabPanel>
-              <TabPanel value={value} index={2}>
+              <TabPanel value={value} index={2} style={{ height: "100%" }}>
                 <Bairros />
               </TabPanel>
-              <TabPanel value={value} index={3}></TabPanel>
-              <TabPanel value={value} index={4}>
+              <TabPanel
+                value={value}
+                index={3}
+                style={{ height: "100%" }}
+              ></TabPanel>
+              <TabPanel value={value} index={4} style={{ height: "100%" }}>
                 <Grid
                   container
                   justify="center"
@@ -147,6 +227,23 @@ const Main = props => {
                 ></Grid>
               </TabPanel>
             </div>
+            <Fab
+              color="primary"
+              aria-label="add"
+              onClick={handleExpandClick}
+              style={{
+                position: "absolute",
+                top: -30,
+                left: -10,
+                fontSize: "1.5rem",
+                zIndex: 100
+              }}
+              // className={clsx(classes.expand, {
+              //   [classes.expandOpen]: expanded
+              // })}
+            >
+              <MdMenu />
+            </Fab>
           </Paper>
         </Grid>
       </Grid>

@@ -1,12 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {
-  Grid,
-  TextField,
-  Button,
-  Divider,
-  Collapse,
-  Fab
-} from "@material-ui/core";
+import { Grid, TextField, Button, Collapse, Fab } from "@material-ui/core";
 import { GetAllbairros, Addbairro } from "../../endpoints/bairro";
 import { makeStyles } from "@material-ui/core/styles";
 import clsx from "clsx";

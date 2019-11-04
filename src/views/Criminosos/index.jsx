@@ -1,17 +1,6 @@
 import React, { useState, useEffect } from "react";
-import {
-  Grid,
-  TextField,
-  Button,
-  Divider,
-  Fab,
-  Modal,
-  Backdrop,
-  Collapse,
-  IconButton
-} from "@material-ui/core";
+import { Grid, TextField, Button, Fab, Collapse } from "@material-ui/core";
 import { FaPlus } from "react-icons/fa";
-import { MdSend } from "react-icons/md";
 import MUIDataTable from "mui-datatables";
 import clsx from "clsx";
 import { GetAllcriminosos, Addcriminoso } from "../../endpoints/criminoso";

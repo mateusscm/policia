@@ -1,36 +1,41 @@
-import {
-    confPOST,
-    confGET,
-    endpoint
-  } from "./index.js";
-  
-  const AddCrime = async (a ,b
-  ) => {
-    try {
-      const conf = {
-        ...confPOST,
-        body: JSON.stringify({
-            a,b
-        })
-      };
-  
-      let resp = await fetch(endpoint + "/crime", conf);
-      return resp;
-    } catch (error) {
-      return error;
-    }
-  };
-  
-  const GetAllCrimes = async () => {
-    try {
-      const conf = {
-        ...confGET
-      };
-      let resp = await fetch(endpoint + "/crime", conf);
-      return resp;
-    } catch (error) {
-      return error;
-    }
-  };
-  export { AddCrime, GetAllCrimes};
-  
+import { confPOST, confGET, endpoint } from "./index.js";
+
+const AddCrime = async (
+  data,
+  descricao,
+  idBairro,
+  idCriminosos,
+  idQuadrilhas
+) => {
+  try {
+    const conf = {
+      ...confPOST,
+      body: JSON.stringify({
+        data,
+        descricao,
+        idBairro,
+        idCriminosos,
+        idQuadrilhas
+      })
+    };
+
+    let resp = await fetch(endpoint + "/crimes", conf);
+    return resp;
+  } catch (error) {
+    return error;
+  }
+};
+
+const GetAllCrimes = async () => {
+  try {
+    const conf = {
+      ...confGET
+    };
+    let resp = await fetch(endpoint + "/crimes", conf);
+    resp = await resp.json();
+    return resp ? resp : [];
+  } catch (error) {
+    return error;
+  }
+};
+export { AddCrime, GetAllCrimes };

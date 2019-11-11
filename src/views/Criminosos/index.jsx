@@ -144,11 +144,11 @@ const useStyles = makeStyles(theme => ({
 const Criminosos = () => {
   const classes = useStyles();
   const [criminosos, setCriminosos] = useState([]);
-  const [isForm, setIsForm] = useState(false);
+  const [, setIsForm] = useState(false);
   const [nome, setNome] = useState("");
   const [data, setData] = useState("");
   const [cpf, setCpf] = useState("");
-  const [columns, setColumns] = useState([
+  const [columns] = useState([
     { name: "cpf", label: "CPF" },
     { name: "nome", label: "Nome" },
     { name: "dataDeNascimento", label: "Nascimento" }

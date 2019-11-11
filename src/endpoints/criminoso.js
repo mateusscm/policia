@@ -24,7 +24,8 @@ const GetAllcriminosos = async () => {
       ...confGET
     };
     let resp = await fetch(endpoint + "/criminosos", conf);
-    return await resp.json();
+    resp = await resp.json();
+    return resp ? resp : [];
   } catch (error) {
     return error;
   }

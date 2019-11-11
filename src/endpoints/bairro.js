@@ -27,7 +27,8 @@ import {
         ...confGET
       };
       let resp = await fetch(endpoint + "/bairros", conf);
-      return await resp.json();
+      resp = await resp.json();
+      return resp ? resp : [];
     } catch (error) {
       return error;
     }

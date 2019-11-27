@@ -16,6 +16,7 @@ import clsx from "clsx";
 import Quadrilhas from "../Quadrilhas";
 import Bairros from "../Bairros";
 import Criminosos from "../Criminosos";
+import Crimes from "../Crimes";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -142,7 +143,7 @@ const useStyles = makeStyles(theme => ({
 
 const Main = props => {
   const classes = useStyles();
-  let [value, setValue] = React.useState(0);
+  let [value, setValue] = React.useState(3);
   let [expanded, setExpanded] = React.useState(false);
 
   const handleExpandClick = () => {
@@ -193,11 +194,11 @@ const Main = props => {
                 label="Crimes"
                 {...a11yProps(3)}
               />
-              <Tab
+              {/* <Tab
                 className={classes.individualTab}
                 label="Mito"
                 {...a11yProps(3)}
-              />
+              />*/}
             </Tabs>
             <div
               className={clsx(
@@ -214,18 +215,16 @@ const Main = props => {
               <TabPanel value={value} index={2} style={{ height: "100%" }}>
                 <Bairros />
               </TabPanel>
-              <TabPanel
-                value={value}
-                index={3}
-                style={{ height: "100%" }}
-              ></TabPanel>
-              <TabPanel value={value} index={4} style={{ height: "100%" }}>
+              <TabPanel value={value} index={3} style={{ height: "100%" }}>
+                <Crimes />
+              </TabPanel>
+              {/* <TabPanel value={value} index={4} style={{ height: "100%" }}>
                 <Grid
                   container
                   justify="center"
                   className={classes.bolso}
                 ></Grid>
-              </TabPanel>
+              </TabPanel> */}
             </div>
             <Fab
               color="primary"

@@ -9,9 +9,7 @@ import {
     try {
       const conf = {
         ...confPOST,
-        body: JSON.stringify({
-            nome
-        })
+        body: nome
       };
   
       let resp = await fetch(endpoint + "/bairros", conf);

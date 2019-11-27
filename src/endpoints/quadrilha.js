@@ -13,7 +13,6 @@ const AddQuadrilha = async (cpfDosIntegrantes, idDosCrimes, nome) => {
 
     let resp = await fetch(endpoint + "/quadrilhas", conf);
     resp = await resp.json();
-    debugger
     return resp;
   } catch (error) {
     return error;

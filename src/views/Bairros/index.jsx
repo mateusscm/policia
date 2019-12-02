@@ -1,5 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { Grid, TextField, Button, Collapse, Fab } from "@material-ui/core";
+import {
+  Grid,
+  TextField,
+  Button,
+  Collapse,
+  IconButton,
+  Tooltip
+} from "@material-ui/core";
 import { GetAllbairros, Addbairro } from "../../endpoints/bairro";
 import { makeStyles } from "@material-ui/core/styles";
 import clsx from "clsx";
@@ -41,7 +48,7 @@ const getMuiTheme = () =>
       },
       MuiToolbar: {
         root: {
-          backgroundColor: "#8fbc8f"
+          backgroundColor: "#000"
         },
         regular: {
           minHeight: "0px !important"
@@ -77,15 +84,33 @@ const getMuiTheme = () =>
         root: {
           padding: "0px !important",
           boxShadow: "none",
-          backgroundColor: "#8fbc8f",
+          backgroundColor: "#000",
           borderRadius: 0
+        },
+        title: {
+          color: "white"
         }
       },
       MUIDataTableSearch: {
         main: {
           alignItems: "center"
         }
+      },
+      MuiIconButton: {
+        root: {
+          color: "white"
+        }
+      },
+      MUIDataTablePagination: {
+        root: {
+          padding: "0 !important"
+        }
       }
+      // MUIDataTableToolbarSelect: {
+      //   title: {
+      //     color: "white"
+      //   }
+      // }
     }
   });
 
@@ -151,19 +176,30 @@ const Bairros = () => {
     customToolbar: () => {
       console.log(expanded);
       return (
-        <Fab
-          color="primary"
-          aria-label="add"
-          onClick={handleExpandClick}
-          // style={{ position: "absolute", bottom: 10, right: 10 }}
-          className={clsx(classes.expand, {
-            [classes.expandOpen]: expanded
-          })}
-        >
-          <FaPlus />
-        </Fab>
+        <Tooltip title="Adicionar Bairros">
+          <IconButton
+            color="primary"
+            aria-label="add"
+            onClick={handleExpandClick}
+            style={{ color: "white", fontSize: 22 }}
+            // style={{ position: "absolute", bottom: 10, right: 10 }}
+            // className={clsx(classes.expand, {
+            //   [classes.expandOpen]: expanded
+            // })}
+          >
+            <FaPlus />
+          </IconButton>
+        </Tooltip>
         // <BtnExpand handleExpandClick={handleExpandClick} expanded={expanded} />
       );
+    },
+    textLabels: {
+      pagination: {
+        rowsPerPage: "Linhas por página:"
+      },
+      selectedRows: {
+        text: "linha(s) selecionada(s)"
+      }
     }
   };
 
@@ -196,7 +232,7 @@ const Bairros = () => {
             <Button
               style={{
                 margin: "10px 0px",
-                backgroundColor: "#45f000",
+                backgroundColor: "rgb(64, 64, 64)",
                 color: "white"
               }}
               fullWidth

@@ -1,5 +1,13 @@
 import React, { useState, useEffect } from "react";
-import { Grid, TextField, Button, Fab, Collapse } from "@material-ui/core";
+import {
+  Grid,
+  TextField,
+  Button,
+  Fab,
+  Collapse,
+  IconButton,
+  Tooltip
+} from "@material-ui/core";
 import { FaPlus } from "react-icons/fa";
 import MUIDataTable from "mui-datatables";
 import clsx from "clsx";
@@ -41,7 +49,7 @@ const getMuiTheme = () =>
       },
       MuiToolbar: {
         root: {
-          backgroundColor: "#8fbc8f"
+          backgroundColor: "#000"
         },
         regular: {
           minHeight: "0px !important"
@@ -77,13 +85,26 @@ const getMuiTheme = () =>
         root: {
           padding: "0px !important",
           boxShadow: "none",
-          backgroundColor: "#8fbc8f",
+          backgroundColor: "#000",
           borderRadius: 0
+        },
+        title: {
+          color: "white"
         }
       },
       MUIDataTableSearch: {
         main: {
           alignItems: "center"
+        }
+      },
+      MuiIconButton: {
+        root: {
+          color: "white"
+        }
+      },
+      MUIDataTablePagination: {
+        root: {
+          padding: "0 !important"
         }
       }
     }
@@ -183,27 +204,26 @@ const Criminosos = () => {
     customToolbar: () => {
       console.log(expanded);
       return (
-        <Fab
-          color="primary"
-          aria-label="add"
-          onClick={handleExpandClick}
-          // style={{ position: "absolute", bottom: 10, right: 10 }}
-          className={clsx(classes.expand, {
-            [classes.expandOpen]: expanded
-          })}
-        >
-          <FaPlus />
-        </Fab>
+        <Tooltip title="Adicionar Criminosos">
+          <IconButton
+            color="primary"
+            aria-label="add"
+            onClick={handleExpandClick}
+            style={{ color: "white", fontSize: 22 }}
+            // style={{ position: "absolute", bottom: 10, right: 10 }}
+            // className={clsx(classes.expand, {
+            //   [classes.expandOpen]: expanded
+            // })}
+          >
+            <FaPlus />
+          </IconButton>
+        </Tooltip>
         // <BtnExpand handleExpandClick={handleExpandClick} expanded={expanded} />
       );
     }
   };
   return (
-    <Grid
-      container
-      justify="center"
-      style={{ height: "100%", position: "relative" }}
-    >
+    <Grid container justify="center" style={{ position: "relative" }}>
       {/* {isForm ? ( */}
 
       {/* ) : ( */}
@@ -245,7 +265,7 @@ const Criminosos = () => {
             <Button
               style={{
                 margin: "10px 0px",
-                backgroundColor: "#45f000",
+                backgroundColor: "rgb(64, 64, 64)",
                 color: "white"
               }}
               fullWidth

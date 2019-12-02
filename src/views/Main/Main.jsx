@@ -144,7 +144,7 @@ const useStyles = makeStyles(theme => ({
 const Main = props => {
   const classes = useStyles();
   let [value, setValue] = React.useState(3);
-  let [expanded, setExpanded] = React.useState(false);
+  let [expanded, setExpanded] = React.useState(true);
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
@@ -235,7 +235,8 @@ const Main = props => {
                 top: -30,
                 left: -10,
                 fontSize: "1.5rem",
-                zIndex: 100
+                zIndex: 100,
+                backgroundColor: "rgb(64, 64, 64)"
               }}
               // className={clsx(classes.expand, {
               //   [classes.expandOpen]: expanded

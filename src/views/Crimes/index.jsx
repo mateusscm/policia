@@ -9,8 +9,11 @@ import {
   Select,
   MenuItem,
   Typography,
-  Chip
+  Chip,
+  IconButton,
+  Tooltip
 } from "@material-ui/core";
+import AddIcon from "@material-ui/icons/Add";
 import { FaPlus } from "react-icons/fa";
 import MUIDataTable from "mui-datatables";
 import clsx from "clsx";
@@ -55,7 +58,7 @@ const getMuiTheme = () =>
       },
       MuiToolbar: {
         root: {
-          backgroundColor: "#8fbc8f"
+          backgroundColor: "#000"
         },
         regular: {
           minHeight: "0px !important"
@@ -91,13 +94,26 @@ const getMuiTheme = () =>
         root: {
           padding: "0px !important",
           boxShadow: "none",
-          backgroundColor: "#8fbc8f",
+          backgroundColor: "#000",
           borderRadius: 0
+        },
+        title: {
+          color: "white"
         }
       },
       MUIDataTableSearch: {
         main: {
           alignItems: "center"
+        }
+      },
+      MuiIconButton: {
+        root: {
+          color: "white"
+        }
+      },
+      MUIDataTablePagination: {
+        root: {
+          padding: "0 !important"
         }
       }
     }
@@ -243,27 +259,26 @@ const Crimes = () => {
     customToolbar: () => {
       console.log(expanded);
       return (
-        <Fab
-          color="primary"
-          aria-label="add"
-          onClick={handleExpandClick}
-          // style={{ position: "absolute", bottom: 10, right: 10 }}
-          className={clsx(classes.expand, {
-            [classes.expandOpen]: expanded
-          })}
-        >
-          <FaPlus />
-        </Fab>
+        <Tooltip title="Adicionar Crime">
+          <IconButton
+            color="primary"
+            aria-label="add"
+            onClick={handleExpandClick}
+            style={{ color: "white", fontSize: 22 }}
+            // style={{ position: "absolute", bottom: 10, right: 10 }}
+            // className={clsx(classes.expand, {
+            //   [classes.expandOpen]: expanded
+            // })}
+          >
+            <FaPlus />
+          </IconButton>
+        </Tooltip>
         // <BtnExpand handleExpandClick={handleExpandClick} expanded={expanded} />
       );
     }
   };
   return (
-    <Grid
-      container
-      justify="center"
-      style={{ height: "100%", position: "relative" }}
-    >
+    <Grid container justify="center" style={{ position: "relative" }}>
       <Collapse
         in={expanded}
         style={{ width: "100%" }}
@@ -290,45 +305,80 @@ const Crimes = () => {
                 setDescricao(e.target.value);
               }}
             />
-            <Grid item xs={12} sm={6} style={{ marginTop: 12 }}>
-              <InputLabel>Criminosos</InputLabel>
+            <Grid container style={{ margin: "10px 0px" }}>
+              <InputLabel>Bairro</InputLabel>
               <Select
-                value={CPFselected}
+                value={bairroSelected}
                 onChange={e => {
-                  setCPFselected(e.target.value);
+                  setBairroSelected(e.target.value);
                 }}
                 style={{ width: "100%" }}
                 inputProps={{
-                  name: "CPF",
-                  id: "cpf-simple"
+                  name: "vairro",
+                  id: "vairro-simple"
                 }}
               >
                 <MenuItem disabled key={"i"} value={""}>
-                  Selecione um criminoso
+                  Selecione um bairro
                 </MenuItem>
-                {criminosos.length > 0
-                  ? criminosos.map((c, i) => (
-                      <MenuItem key={i} value={c.cpf}>
+                {bairro.length > 0
+                  ? bairro.map((c, i) => (
+                      <MenuItem key={i} value={c.id}>
                         {c.nome}
                       </MenuItem>
                     ))
                   : null}
               </Select>
-              <Button
-                onClick={() => {
-                  let vet = [...criminosos_list];
-                  vet.push(CPFselected);
-                  setCriminosos_list(vet);
-                  setCPFselected("");
-                }}
-                color="primary"
-              >
-                Adicionar cpf
-              </Button>
             </Grid>
-            <Grid item xs={12}>
-              <Typography variant="h6" display="inline">
-                Valores:{" "}
+            <Grid container alignItems="flex-end" style={{ marginTop: 12 }}>
+              <Grid item xs={11} sm={11}>
+                <InputLabel>Criminosos</InputLabel>
+                <Select
+                  value={CPFselected}
+                  onChange={e => {
+                    setCPFselected(e.target.value);
+                  }}
+                  style={{ width: "100%" }}
+                  inputProps={{
+                    name: "CPF",
+                    id: "cpf-simple"
+                  }}
+                >
+                  <MenuItem disabled key={"i"} value={""}>
+                    Selecione um criminoso
+                  </MenuItem>
+                  {criminosos.length > 0
+                    ? criminosos.map((c, i) => (
+                        <MenuItem key={i} value={c.cpf}>
+                          {c.nome}
+                        </MenuItem>
+                      ))
+                    : null}
+                </Select>
+              </Grid>
+              <Grid item xs={1} sm={1}>
+                <Grid container justify="flex-end">
+                  <Fab
+                    size="small"
+                    color="primary"
+                    aria-label="add"
+                    onClick={() => {
+                      let vet = [...criminosos_list];
+                      vet.push(CPFselected);
+                      setCriminosos_list(vet);
+                      setCPFselected("");
+                    }}
+                  >
+                    <AddIcon />
+                  </Fab>
+                </Grid>
+              </Grid>
+            </Grid>
+            <Grid container style={{ marginTop: 12 }}>
+              <Grid item xs={12}>
+                <Typography display="inline" style={{ color: "black" }}>
+                  Valores:{" "}
+                </Typography>
                 {criminosos_list.length > 0
                   ? criminosos_list.map((data, i) => (
                       <Chip
@@ -344,91 +394,82 @@ const Crimes = () => {
                       />
                     ))
                   : null}
-              </Typography>
+              </Grid>
             </Grid>
-            <Grid item xs={12} sm={6} style={{ marginTop: 12 }}>
-              <InputLabel>Quadrilhas</InputLabel>
-              <Select
-                value={Quaselected}
-                onChange={e => {
-                  setQuaselected(e.target.value);
-                }}
-                style={{ width: "100%" }}
-                inputProps={{
-                  name: "qua",
-                  id: "qua-simple"
-                }}
-              >
-                <MenuItem disabled key={"i"} value={""}>
-                  Selecione uma quadrilha
-                </MenuItem>
-                {Quadrilhas.length > 0
-                  ? Quadrilhas.map((c, i) => (
-                      <MenuItem key={i} value={c.id}>
-                        {c.nome}
-                      </MenuItem>
-                    ))
-                  : null}
-              </Select>
-              <Button
-                onClick={() => {
-                  let vet = [...quadrilha_list];
-                  vet.push(Quaselected);
-                  setQuadrilha_list(vet);
-                  setQuaselected("");
-                }}
-                color="primary"
-              >
-                Adicionar quadrilha
-              </Button>
+            <Grid container alignItems="flex-end" style={{ marginTop: 12 }}>
+              <Grid item xs={11} sm={11}>
+                <InputLabel>Quadrilhas</InputLabel>
+                <Select
+                  value={Quaselected}
+                  onChange={e => {
+                    setQuaselected(e.target.value);
+                  }}
+                  style={{ width: "100%" }}
+                  inputProps={{
+                    name: "qua",
+                    id: "qua-simple"
+                  }}
+                >
+                  <MenuItem disabled key={"i"} value={""}>
+                    Selecione uma quadrilha
+                  </MenuItem>
+                  {Quadrilhas.length > 0
+                    ? Quadrilhas.map((c, i) => (
+                        <MenuItem key={i} value={c.id}>
+                          {c.nome}
+                        </MenuItem>
+                      ))
+                    : null}
+                </Select>
+              </Grid>
+              <Grid item xs={1} sm={1}>
+                <Grid container justify="flex-end">
+                  <Fab
+                    size="small"
+                    color="primary"
+                    aria-label="add"
+                    onClick={() => {
+                      let vet = [...quadrilha_list];
+                      vet.push(Quaselected);
+                      setQuadrilha_list(vet);
+                      setQuaselected("");
+                    }}
+                  >
+                    <AddIcon />
+                  </Fab>
+                </Grid>
+                {/* <Button
+                  
+                  color="primary"
+                >
+                  Adicionar quadrilha
+                </Button> */}
+              </Grid>
             </Grid>
-            <Grid item xs={12}>
-              <Typography variant="h6" display="inline">
+            <Grid item xs={12} style={{ marginTop: 12 }}>
+              <Typography display="inline" style={{ color: "black" }}>
                 Valores:{" "}
-                {quadrilha_list.length > 0
-                  ? quadrilha_list.map((data, i) => (
-                      <Chip
-                        onDelete={() => {
-                          let n = [...quadrilha_list];
-                          n.splice(n.indexOf(data), 1);
-                          setQuadrilha_list(n);
-                        }}
-                        color="primary"
-                        key={i}
-                        label={data}
-                        className={classes.chip}
-                      />
-                    ))
-                  : null}
               </Typography>
-            </Grid>
-            <InputLabel>Bairro</InputLabel>
-            <Select
-              value={bairroSelected}
-              onChange={e => {
-                setBairroSelected(e.target.value);
-              }}
-              style={{ width: "100%" }}
-              inputProps={{
-                name: "vairro",
-                id: "vairro-simple"
-              }}
-            >
-              <MenuItem disabled key={"i"} value={""}>
-                Selecione um bairro
-              </MenuItem>
-              {bairro.length > 0
-                ? bairro.map((c, i) => (
-                    <MenuItem key={i} value={c.id}>
-                      {c.nome}
-                    </MenuItem>
+              {quadrilha_list.length > 0
+                ? quadrilha_list.map((data, i) => (
+                    <Chip
+                      onDelete={() => {
+                        let n = [...quadrilha_list];
+                        n.splice(n.indexOf(data), 1);
+                        setQuadrilha_list(n);
+                      }}
+                      color="primary"
+                      key={i}
+                      label={data}
+                      className={classes.chip}
+                    />
                   ))
                 : null}
-            </Select>
+            </Grid>
             <Button
               style={{
                 margin: "10px 0px",
-                backgroundColor: "#45f000",
+                backgroundColor: "rgb(64, 64, 64)",
                 color: "white"
               }}
               fullWidth

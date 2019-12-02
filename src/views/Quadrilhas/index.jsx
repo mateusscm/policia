@@ -9,8 +9,11 @@ import {
   Collapse,
   Select,
   MenuItem,
-  InputLabel
+  InputLabel,
+  IconButton,
+  Tooltip
 } from "@material-ui/core";
+import AddIcon from "@material-ui/icons/Add";
 import { FaPlus } from "react-icons/fa";
 import MUIDataTable from "mui-datatables";
 import clsx from "clsx";
@@ -53,7 +56,7 @@ const getMuiTheme = () =>
       },
       MuiToolbar: {
         root: {
-          backgroundColor: "#8fbc8f"
+          backgroundColor: "#000"
         },
         regular: {
           minHeight: "0px !important"
@@ -89,13 +92,26 @@ const getMuiTheme = () =>
         root: {
           padding: "0px !important",
           boxShadow: "none",
-          backgroundColor: "#8fbc8f",
+          backgroundColor: "#000",
           borderRadius: 0
+        },
+        title: {
+          color: "white"
         }
       },
       MUIDataTableSearch: {
         main: {
           alignItems: "center"
+        }
+      },
+      MuiIconButton: {
+        root: {
+          color: "white"
+        }
+      },
+      MUIDataTablePagination: {
+        root: {
+          padding: "0 !important"
         }
       }
     }
@@ -200,27 +216,26 @@ const Quadrilhas = () => {
     customToolbar: () => {
       console.log(expanded);
       return (
-        <Fab
-          color="primary"
-          aria-label="add"
-          onClick={handleExpandClick}
-          // style={{ position: "absolute", bottom: 10, right: 10 }}
-          className={clsx(classes.expand, {
-            [classes.expandOpen]: expanded
-          })}
-        >
-          <FaPlus />
-        </Fab>
+        <Tooltip title="Adicionar Quadrilha">
+          <IconButton
+            color="primary"
+            aria-label="add"
+            onClick={handleExpandClick}
+            style={{ color: "white", fontSize: 22 }}
+            // style={{ position: "absolute", bottom: 10, right: 10 }}
+            // className={clsx(classes.expand, {
+            //   [classes.expandOpen]: expanded
+            // })}
+          >
+            <FaPlus />
+          </IconButton>
+        </Tooltip>
         // <BtnExpand handleExpandClick={handleExpandClick} expanded={expanded} />
       );
     }
   };
   return (
-    <Grid
-      container
-      justify="center"
-      style={{ height: "100%", position: "relative" }}
-    >
+    <Grid container justify="center" style={{ position: "relative" }}>
       {/* {isForm ? ( */}
 
       {/* ) : ( */}
@@ -231,7 +246,7 @@ const Quadrilhas = () => {
         unmountOnExit
       >
         <Grid item xs={12}>
-          <Grid container style={{ padding: 50 }}>
+          <Grid container style={{ padding: 10 }}>
             <TextField
               style={{ display: "block" }}
               fullWidth
@@ -241,69 +256,83 @@ const Quadrilhas = () => {
                 setNome(e.target.value);
               }}
             />
-            <Grid item xs={12} sm={6} style={{ marginTop: 12 }}>
-              <InputLabel>Criminoso</InputLabel>
-              <Select
-                value={CPFselected}
-                onChange={e => {
-                  setCPFselected(e.target.value);
-                }}
-                style={{ width: "100%" }}
-                inputProps={{
-                  name: "CPF",
-                  id: "cpf-simple"
-                }}
-              >
-                <MenuItem disabled key={"i"} value={""}>
-                  Selecione um criminoso
-                </MenuItem>
-                {criminosos.length > 0
-                  ? criminosos.map((c, i) => (
-                      <MenuItem key={i} value={c.cpf}>
-                        {c.nome}
-                      </MenuItem>
-                    ))
-                  : null}
-              </Select>
-              <Button
-                onClick={() => {
-                  let vet = [...criminosos_list];
-                  vet.push(CPFselected);
-                  setCriminosos_list(vet);
-                  setCPFselected("");
-                }}
-                color="primary"
-              >
-                Adicionar cpf
-              </Button>
+            <Grid container style={{ marginTop: 12 }}>
+              <Grid item xs={11} sm={11}>
+                <InputLabel>Criminoso</InputLabel>
+                <Select
+                  value={CPFselected}
+                  onChange={e => {
+                    setCPFselected(e.target.value);
+                  }}
+                  style={{ width: "100%" }}
+                  inputProps={{
+                    name: "CPF",
+                    id: "cpf-simple"
+                  }}
+                >
+                  <MenuItem disabled key={"i"} value={""}>
+                    Selecione um criminoso
+                  </MenuItem>
+                  {criminosos.length > 0
+                    ? criminosos.map((c, i) => (
+                        <MenuItem key={i} value={c.cpf}>
+                          {c.nome}
+                        </MenuItem>
+                      ))
+                    : null}
+                </Select>
+              </Grid>
+              <Grid item xs={1} sm={1}>
+                <Fab
+                  size="small"
+                  color="primary"
+                  aria-label="add"
+                  onClick={() => {
+                    let vet = [...criminosos_list];
+                    vet.push(CPFselected);
+                    setCriminosos_list(vet);
+                    setCPFselected("");
+                  }}
+                >
+                  <AddIcon />
+                </Fab>
+                {/* <Button
+                  
+                  color="primary"
+                  variant="outlined"
+                >
+                  Adicionar cpf
+                </Button> */}
+              </Grid>
             </Grid>
-            <Grid item xs={12}>
-              <Typography variant="h6" display="inline">
-                Valores:{" "}
-                {criminosos_list.length > 0
-                  ? criminosos_list.map((data, i) => (
-                      <Chip
-                        onDelete={() => {
-                          let n = [...criminosos_list];
-                          n.splice(n.indexOf(data), 1);
-                          setCriminosos_list(n);
-                        }}
-                        color="primary"
-                        key={i}
-                        label={data}
-                        className={classes.chip}
-                      />
-                    ))
-                  : null}
+            <Grid container style={{ marginTop: 12 }}>
+              <Typography display="inline" style={{ color: "black" }}>
+                Valores:&nbsp;{" "}
               </Typography>
+              {criminosos_list.length > 0
+                ? criminosos_list.map((data, i) => (
+                    <Chip
+                      onDelete={() => {
+                        let n = [...criminosos_list];
+                        n.splice(n.indexOf(data), 1);
+                        setCriminosos_list(n);
+                      }}
+                      color="primary"
+                      key={i}
+                      label={data}
+                      className={classes.chip}
+                    />
+                  ))
+                : "Nenhum CPF adicionado até o momento"}
             </Grid>
 
             <Button
               style={{
                 margin: "10px 0px",
-                backgroundColor: "#ededed",
-                color: "black"
+                backgroundColor: "rgb(64, 64, 64)",
+                color: "white"
               }}
+              variant="contained"
               fullWidth
               color="primary"
               onClick={handleClick}

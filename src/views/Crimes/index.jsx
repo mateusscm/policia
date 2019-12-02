@@ -171,7 +171,7 @@ const useStyles = makeStyles(theme => ({
 // }
 
 // MAMA im in love with a criminal
-const Crimes = () => {
+const Crimes = props => {
   const classes = useStyles();
   const [Crimes, setCrimes] = useState([]);
   const [Quadrilhas, setQuadrilhas] = useState([]);
@@ -201,7 +201,7 @@ const Crimes = () => {
     });
   };
 
-  useEffect(() => {
+  const getInfo = () => {
     GetAllbairros().then(bairro => {
       setbairro(bairro);
     });
@@ -233,6 +233,15 @@ const Crimes = () => {
         })
       );
     });
+  };
+
+  useEffect(() => {
+    getInfo();
+    //eslint-disable-next-line
+  }, [props.tr]);
+
+  useEffect(() => {
+    getInfo();
     //eslint-disable-next-line
   }, []);
 
@@ -248,8 +257,19 @@ const Crimes = () => {
       return !ex;
     });
     GetAllCrimes().then(Crime => {
-      setCrimes(Crime);
+      setCrimes(
+        Crime.map(cri => {
+          return {
+            data: cri.data,
+            descricao: cri.descricao,
+            bairro: cri.bairro.nome,
+            criminosos: cri.criminosos.map(i => i.nome).toString(),
+            quadrilhas: cri.quadrilhas.map(i => i.nome).toString()
+          };
+        })
+      );
     });
+    props.update();
   };
 
   const options = {

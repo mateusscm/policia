@@ -143,7 +143,8 @@ const useStyles = makeStyles(theme => ({
 
 const Main = props => {
   const classes = useStyles();
-  let [value, setValue] = React.useState(3);
+  let [tr, setTr] = React.useState(0);
+  let [value, setValue] = React.useState(0);
   let [expanded, setExpanded] = React.useState(true);
 
   const handleExpandClick = () => {
@@ -207,16 +208,40 @@ const Main = props => {
               )}
             >
               <TabPanel value={value} index={0} style={{ height: "100%" }}>
-                <Criminosos />
+                <Criminosos
+                  tr={tr}
+                  update={() => {
+                    let a = tr + 1;
+                    setTr(a++);
+                  }}
+                />
               </TabPanel>
               <TabPanel value={value} index={1} style={{ height: "100%" }}>
-                <Quadrilhas />
+                <Quadrilhas
+                  tr={tr}
+                  update={() => {
+                    let a = tr + 1;
+                    setTr(a++);
+                  }}
+                />
               </TabPanel>
               <TabPanel value={value} index={2} style={{ height: "100%" }}>
-                <Bairros />
+                <Bairros
+                  tr={tr}
+                  update={() => {
+                    let a = tr + 1;
+                    setTr(a++);
+                  }}
+                />
               </TabPanel>
               <TabPanel value={value} index={3} style={{ height: "100%" }}>
-                <Crimes />
+                <Crimes
+                  tr={tr}
+                  update={() => {
+                    let a = tr + 1;
+                    setTr(a++);
+                  }}
+                />
               </TabPanel>
               {/* <TabPanel value={value} index={4} style={{ height: "100%" }}>
                 <Grid

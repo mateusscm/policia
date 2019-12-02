@@ -152,7 +152,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 // MAMA im in love with a criminal
-const Quadrilhas = () => {
+const Quadrilhas = props => {
   const classes = useStyles();
   const [Quadrilhas, setQuadrilhas] = useState([]);
   const [, setIsForm] = useState(false);
@@ -189,9 +189,10 @@ const Quadrilhas = () => {
         })
       );
     });
+    props.update();
   };
 
-  useEffect(() => {
+  const getInfo = () => {
     GetAllQuadrilhas().then(Quadrilha => {
       setQuadrilhas(
         Quadrilha.map(qua => {
@@ -206,8 +207,17 @@ const Quadrilhas = () => {
     GetAllcriminosos().then(criminoso => {
       setCriminosos(criminoso);
     });
+  };
+
+  useEffect(() => {
+    getInfo();
     //eslint-disable-next-line
   }, []);
+
+  useEffect(() => {
+    getInfo();
+    //eslint-disable-next-line
+  }, [props.tr]);
 
   const options = {
     responsive: "stacked",

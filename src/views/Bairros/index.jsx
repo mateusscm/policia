@@ -137,7 +137,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const Bairros = () => {
+const Bairros = props => {
   const classes = useStyles();
   const [bairro, setbairro] = useState([]);
   const [isForm, setIsForm] = useState(false);
@@ -161,12 +161,21 @@ const Bairros = () => {
     //eslint-disable-next-line
   }, []);
 
+  useEffect(() => {
+    GetAllbairros().then(bairro => {
+      setbairro(bairro);
+    });
+    //eslint-disable-next-line
+  }, [props.tr]);
+
   const handleClick = async () => {
     await Addbairro(nome);
     setIsForm(false);
     GetAllbairros().then(bairro => {
       setbairro(bairro);
     });
+    debugger;
+    props.update();
   };
 
   const options = {

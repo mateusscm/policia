@@ -162,7 +162,7 @@ const useStyles = makeStyles(theme => ({
 // }
 
 // MAMA im in love with a criminal
-const Criminosos = () => {
+const Criminosos = props => {
   const classes = useStyles();
   const [criminosos, setCriminosos] = useState([]);
   const [, setIsForm] = useState(false);
@@ -189,12 +189,20 @@ const Criminosos = () => {
     //eslint-disable-next-line
   }, []);
 
+  useEffect(() => {
+    GetAllcriminosos().then(criminoso => {
+      setCriminosos(criminoso);
+    });
+    //eslint-disable-next-line
+  }, [props.tr]);
+
   const handleClick = async () => {
     await Addcriminoso(nome, cpf, data);
     setIsForm(false);
     GetAllcriminosos().then(criminoso => {
       setCriminosos(criminoso);
     });
+    props.update();
   };
 
   const options = {

@@ -1,4 +1,4 @@
-import { confPOST, confGET, endpoint } from "./index.js";
+import { confPOST, confGET, confDEL, endpoint } from "./index.js";
 
 const AddCrime = async (
   data,
@@ -26,6 +26,20 @@ const AddCrime = async (
   }
 };
 
+const DelCrime = async id => {
+  try {
+    const conf = {
+      ...confDEL,
+      body: id
+    };
+
+    let resp = await fetch(endpoint + "/crimes", conf);
+    return resp;
+  } catch (error) {
+    return error;
+  }
+};
+
 const GetAllCrimes = async () => {
   try {
     const conf = {
@@ -38,4 +52,4 @@ const GetAllCrimes = async () => {
     return error;
   }
 };
-export { AddCrime, GetAllCrimes };
+export { AddCrime, GetAllCrimes, DelCrime };

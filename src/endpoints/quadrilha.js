@@ -1,4 +1,4 @@
-import { confPOST, confGET, endpoint } from "./index.js";
+import { confPOST, confGET, endpoint, confDEL } from "./index.js";
 
 const AddQuadrilha = async (cpfDosIntegrantes, idDosCrimes, nome) => {
   try {
@@ -9,6 +9,21 @@ const AddQuadrilha = async (cpfDosIntegrantes, idDosCrimes, nome) => {
         idDosCrimes,
         nome
       })
+    };
+
+    let resp = await fetch(endpoint + "/quadrilhas", conf);
+    resp = await resp.json();
+    return resp;
+  } catch (error) {
+    return error;
+  }
+};
+
+const DelQuadrilha = async id => {
+  try {
+    const conf = {
+      ...confDEL,
+      body: id
     };
 
     let resp = await fetch(endpoint + "/quadrilhas", conf);
@@ -31,4 +46,4 @@ const GetAllQuadrilhas = async () => {
     return error;
   }
 };
-export { AddQuadrilha, GetAllQuadrilhas };
+export { AddQuadrilha, GetAllQuadrilhas, DelQuadrilha };

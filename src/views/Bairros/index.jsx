@@ -174,7 +174,6 @@ const Bairros = props => {
     GetAllbairros().then(bairro => {
       setbairro(bairro);
     });
-    debugger;
     props.update();
   };
 

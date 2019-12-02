@@ -1,14 +1,28 @@
-import { confPOST, confGET, endpoint } from "./index.js";
+import { confPOST, confGET, confDEL, endpoint } from "./index.js";
 
 const Addcriminoso = async (nome, cpf, dataDeNascimento) => {
   try {
     const conf = {
       ...confPOST,
-    body: JSON.stringify({
+      body: JSON.stringify({
         nome,
         cpf,
         dataDeNascimento
       })
+    };
+
+    let resp = await fetch(endpoint + "/criminosos", conf);
+    return resp;
+  } catch (error) {
+    return error;
+  }
+};
+
+const DelCriminoso = async id => {  
+  try {
+    const conf = {
+      ...confDEL,
+      body: id
     };
 
     let resp = await fetch(endpoint + "/criminosos", conf);

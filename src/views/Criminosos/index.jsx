@@ -207,6 +207,9 @@ const Criminosos = props => {
       setCriminosos(criminoso);
     });
     props.update();
+    setNome("");
+    setData("");
+    setCpf("");
   };
 
   const options = {
@@ -256,6 +259,8 @@ const Criminosos = props => {
             <TextField
               style={{ display: "block" }}
               fullWidth
+              required
+              autoFocus
               label="Nome"
               value={nome}
               onChange={e => {
@@ -264,6 +269,7 @@ const Criminosos = props => {
             />
             <TextField
               style={{ display: "block" }}
+              required
               fullWidth
               label="CPF"
               value={cpf}
@@ -272,6 +278,11 @@ const Criminosos = props => {
               }}
             />
             <TextField
+              type="date"
+              required
+              InputLabelProps={{
+                shrink: true
+              }}
               style={{ display: "block" }}
               fullWidth
               label="Data de Nascimento"

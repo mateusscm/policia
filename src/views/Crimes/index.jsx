@@ -297,13 +297,6 @@ const Crimes = props => {
         </Tooltip>
         // <BtnExpand handleExpandClick={handleExpandClick} expanded={expanded} />
       );
-    },
-    onRowsDelete: i => {
-      i.data.forEach((b, ind) => {
-        let c = Crimes[b.index];
-        debugger;
-        DelCrime(c.id);
-      });
     }
   };
   return (
@@ -317,6 +310,10 @@ const Crimes = props => {
         <Grid item xs={12}>
           <Grid container style={{ padding: 10 }}>
             <TextField
+              type="date"
+              InputLabelProps={{
+                shrink: true
+              }}
               style={{ display: "block" }}
               fullWidth
               label="Data"

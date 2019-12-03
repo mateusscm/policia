@@ -11,7 +11,7 @@ const AddCrime = async (
     const conf = {
       ...confPOST,
       body: JSON.stringify({
-        data,
+        data: new Date(data).getTime(),
         descricao,
         idBairro,
         idCriminosos,
@@ -47,6 +47,11 @@ const GetAllCrimes = async () => {
     };
     let resp = await fetch(endpoint + "/crimes", conf);
     resp = await resp.json();
+    resp = resp.map((r, i, res) => {
+      let t = r;
+      t.data = new Date(t.data).toISOString().split("T")[0];
+      return t;
+    });
     return resp ? resp : [];
   } catch (error) {
     return error;

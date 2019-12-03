@@ -17,7 +17,11 @@ import AddIcon from "@material-ui/icons/Add";
 import { FaPlus } from "react-icons/fa";
 import MUIDataTable from "mui-datatables";
 import clsx from "clsx";
-import { GetAllQuadrilhas, AddQuadrilha } from "../../endpoints/quadrilha";
+import {
+  GetAllQuadrilhas,
+  AddQuadrilha,
+  DelQuadrilha
+} from "../../endpoints/quadrilha";
 import { makeStyles } from "@material-ui/core/styles";
 import { GetAllcriminosos } from "../../endpoints/criminoso";
 import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
@@ -182,6 +186,7 @@ const Quadrilhas = props => {
       setQuadrilhas(
         Quadrilha.map(qua => {
           return {
+            id: qua.id,
             nome: qua.nome,
             cpfs: qua.integrantes.map(i => i.cpf).toString(),
             nomes: qua.integrantes.map(i => i.nome).toString()
@@ -197,6 +202,7 @@ const Quadrilhas = props => {
       setQuadrilhas(
         Quadrilha.map(qua => {
           return {
+            id: qua.id,
             nome: qua.nome,
             cpfs: qua.integrantes.map(i => i.cpf).toString(),
             nomes: qua.integrantes.map(i => i.nome).toString()
@@ -242,6 +248,13 @@ const Quadrilhas = props => {
         </Tooltip>
         // <BtnExpand handleExpandClick={handleExpandClick} expanded={expanded} />
       );
+    },
+    onRowsDelete: i => {
+      i.data.forEach((b, ind) => {
+        let c = Quadrilhas[b.index];
+        debugger;
+        DelQuadrilha(c.id);
+      });
     }
   };
   return (

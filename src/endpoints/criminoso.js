@@ -18,7 +18,7 @@ const Addcriminoso = async (nome, cpf, dataDeNascimento) => {
   }
 };
 
-const DelCriminoso = async id => {  
+const DelCriminoso = async id => {
   try {
     const conf = {
       ...confDEL,
@@ -44,4 +44,4 @@ const GetAllcriminosos = async () => {
     return error;
   }
 };
-export { Addcriminoso, GetAllcriminosos };
+export { Addcriminoso, GetAllcriminosos, DelCriminoso };

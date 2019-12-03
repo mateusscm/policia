@@ -19,7 +19,7 @@ import MUIDataTable from "mui-datatables";
 import clsx from "clsx";
 import { makeStyles } from "@material-ui/core/styles";
 import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
-import { GetAllCrimes, AddCrime } from "../../endpoints/crime";
+import { GetAllCrimes, AddCrime, DelCrime } from "../../endpoints/crime";
 import { GetAllcriminosos } from "../../endpoints/criminoso";
 import { GetAllQuadrilhas } from "../../endpoints/quadrilha";
 import { GetAllbairros } from "../../endpoints/bairro";
@@ -224,6 +224,7 @@ const Crimes = props => {
       setCrimes(
         Crime.map(cri => {
           return {
+            id: cri.id,
             data: cri.data,
             descricao: cri.descricao,
             bairro: cri.bairro.nome,
@@ -260,6 +261,7 @@ const Crimes = props => {
       setCrimes(
         Crime.map(cri => {
           return {
+            id: cri.id,
             data: cri.data,
             descricao: cri.descricao,
             bairro: cri.bairro.nome,
@@ -295,6 +297,13 @@ const Crimes = props => {
         </Tooltip>
         // <BtnExpand handleExpandClick={handleExpandClick} expanded={expanded} />
       );
+    },
+    onRowsDelete: i => {
+      i.data.forEach((b, ind) => {
+        let c = Crimes[b.index];
+        debugger;
+        DelCrime(c.id);
+      });
     }
   };
   return (

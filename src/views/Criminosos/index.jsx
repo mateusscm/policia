@@ -11,7 +11,11 @@ import {
 import { FaPlus } from "react-icons/fa";
 import MUIDataTable from "mui-datatables";
 import clsx from "clsx";
-import { GetAllcriminosos, Addcriminoso } from "../../endpoints/criminoso";
+import {
+  GetAllcriminosos,
+  Addcriminoso,
+  DelCriminoso
+} from "../../endpoints/criminoso";
 import { makeStyles } from "@material-ui/core/styles";
 import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
 
@@ -228,6 +232,12 @@ const Criminosos = props => {
         </Tooltip>
         // <BtnExpand handleExpandClick={handleExpandClick} expanded={expanded} />
       );
+    },
+    onRowsDelete: i => {
+      i.data.forEach((crim, ind) => {
+        let c = criminosos[crim.index];
+        DelCriminoso(c.cpf);
+      });
     }
   };
   return (

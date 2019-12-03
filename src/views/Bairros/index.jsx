@@ -7,7 +7,7 @@ import {
   IconButton,
   Tooltip
 } from "@material-ui/core";
-import { GetAllbairros, Addbairro } from "../../endpoints/bairro";
+import { GetAllbairros, Addbairro, DelBairro } from "../../endpoints/bairro";
 import { makeStyles } from "@material-ui/core/styles";
 import clsx from "clsx";
 import { FaPlus } from "react-icons/fa";
@@ -200,6 +200,12 @@ const Bairros = props => {
         </Tooltip>
         // <BtnExpand handleExpandClick={handleExpandClick} expanded={expanded} />
       );
+    },
+    onRowsDelete: i => {
+      i.data.forEach((b, ind) => {
+        let c = bairro[b.index];
+        DelBairro(c.id);
+      });
     },
     textLabels: {
       pagination: {

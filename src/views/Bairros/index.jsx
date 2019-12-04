@@ -5,7 +5,8 @@ import {
   Button,
   Collapse,
   IconButton,
-  Tooltip
+  Tooltip,
+  Typography
 } from "@material-ui/core";
 import { GetAllbairros, Addbairro, DelBairro } from "../../endpoints/bairro";
 import { makeStyles } from "@material-ui/core/styles";
@@ -105,7 +106,26 @@ const getMuiTheme = () =>
         root: {
           padding: "0 !important"
         }
+      },
+      MUIDataTableSearch: {
+        searchText: {
+          backgroundColor: "white !important",
+          height: "50%"
+        },
+        main: {
+          alignItems: "center"
+        }
       }
+      // MUIDataTableSearch: {
+      //   main: {
+      //     alignItems: "center"
+      //   }
+      // }
+      // MuiInputBase: {
+      //   input: {
+      //     color: "white !important"
+      //   }
+      // }
       // MUIDataTableToolbarSelect: {
       //   title: {
       //     color: "white"
@@ -147,6 +167,7 @@ const Bairros = props => {
     { name: "nome", label: "Nome" }
   ]);
   const [expanded, setExpanded] = React.useState(false);
+  const [error, setError] = React.useState(false);
 
   const handleExpandClick = () => {
     setExpanded(ex => {
@@ -169,12 +190,20 @@ const Bairros = props => {
   }, [props.tr]);
 
   const handleClick = async () => {
-    await Addbairro(nome);
-    setIsForm(false);
-    GetAllbairros().then(bairro => {
-      setbairro(bairro);
-    });
-    props.update();
+    if (nome === "") {
+      setError(true);
+    } else if (nome.trim().length === 0) {
+      setError(true);
+    } else {
+      await Addbairro(nome);
+      setIsForm(false);
+      GetAllbairros().then(bairro => {
+        setbairro(bairro);
+      });
+      props.update();
+      setNome("");
+      setError(false);
+    }
   };
 
   const options = {
@@ -228,21 +257,23 @@ const Bairros = props => {
         <Grid item xs={12}>
           <Grid container style={{ padding: 10 }}>
             <TextField
+              required
+              autoFocus
               label="Nome"
               style={{ display: "block" }}
               fullWidth
               value={nome}
               onChange={e => {
                 setNome(e.target.value);
+                console.log(e.target.value);
               }}
             />
-            {/* <Button
-              onClick={() => {
-                setIsForm(false);
-              }}
-            >
-              Cancelar
-            </Button> */}
+            {error ? (
+              <Typography variant="caption" style={{ color: "red" }}>
+                Preencha todos os campos
+              </Typography>
+            ) : null}
+
             <Button
               style={{
                 margin: "10px 0px",

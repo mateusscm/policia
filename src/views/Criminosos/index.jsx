@@ -3,7 +3,7 @@ import {
   Grid,
   TextField,
   Button,
-  Fab,
+  Typography,
   Collapse,
   IconButton,
   Tooltip
@@ -110,6 +110,15 @@ const getMuiTheme = () =>
         root: {
           padding: "0 !important"
         }
+      },
+      MUIDataTableSearch: {
+        searchText: {
+          backgroundColor: "white !important",
+          height: "50%"
+        },
+        main: {
+          alignItems: "center"
+        }
       }
     }
   });
@@ -179,6 +188,7 @@ const Criminosos = props => {
     { name: "dataDeNascimento", label: "Nascimento" }
   ]);
   const [expanded, setExpanded] = React.useState(false);
+  const [error, setError] = React.useState(false);
 
   const handleExpandClick = () => {
     setExpanded(ex => {
@@ -201,15 +211,25 @@ const Criminosos = props => {
   }, [props.tr]);
 
   const handleClick = async () => {
-    await Addcriminoso(nome, cpf, data);
-    setIsForm(false);
-    GetAllcriminosos().then(criminoso => {
-      setCriminosos(criminoso);
-    });
-    props.update();
-    setNome("");
-    setData("");
-    setCpf("");
+    if (nome === "" || cpf === "" || data === "") {
+      setError(true);
+    } else if (
+      nome.trim().length === 0 ||
+      cpf.trim().length === 0 ||
+      data.trim().length === 0
+    ) {
+      setError(true);
+    } else {
+      await Addcriminoso(nome, cpf, data);
+      setIsForm(false);
+      GetAllcriminosos().then(criminoso => {
+        setCriminosos(criminoso);
+      });
+      props.update();
+      setNome("");
+      setData("");
+      setCpf("");
+    }
   };
 
   const options = {
@@ -258,8 +278,8 @@ const Criminosos = props => {
           <Grid container style={{ padding: 10 }}>
             <TextField
               style={{ display: "block" }}
-              fullWidth
               required
+              fullWidth
               autoFocus
               label="Nome"
               value={nome}
@@ -291,6 +311,11 @@ const Criminosos = props => {
                 setData(e.target.value);
               }}
             />
+            {error ? (
+              <Typography variant="caption" style={{ color: "red" }}>
+                Preencha todos os campos
+              </Typography>
+            ) : null}
             <Button
               style={{
                 margin: "10px 0px",

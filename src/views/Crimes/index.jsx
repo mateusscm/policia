@@ -115,6 +115,15 @@ const getMuiTheme = () =>
         root: {
           padding: "0 !important"
         }
+      },
+      MUIDataTableSearch: {
+        searchText: {
+          backgroundColor: "white !important",
+          height: "50%"
+        },
+        main: {
+          alignItems: "center"
+        }
       }
     }
   });
@@ -194,6 +203,7 @@ const Crimes = props => {
     { name: "criminosos", label: "Criminosos" }
   ]);
   const [expanded, setExpanded] = React.useState(false);
+  const [error, setError] = React.useState(false);
 
   const handleExpandClick = () => {
     setExpanded(ex => {
@@ -247,31 +257,44 @@ const Crimes = props => {
   }, []);
 
   const handleClick = async () => {
-    await AddCrime(
-      data,
-      descricao,
-      bairroSelected,
-      criminosos_list,
-      quadrilha_list
-    );
-    setExpanded(ex => {
-      return !ex;
-    });
-    GetAllCrimes().then(Crime => {
-      setCrimes(
-        Crime.map(cri => {
-          return {
-            id: cri.id,
-            data: cri.data,
-            descricao: cri.descricao,
-            bairro: cri.bairro.nome,
-            criminosos: cri.criminosos.map(i => i.nome).toString(),
-            quadrilhas: cri.quadrilhas.map(i => i.nome).toString()
-          };
-        })
+    if (descricao === "" || data === "") {
+      setError(true);
+    } else if (descricao.trim().length === 0 || data.trim().length === 0) {
+      setError(true);
+    } else {
+      await AddCrime(
+        data,
+        descricao,
+        bairroSelected,
+        criminosos_list,
+        quadrilha_list
       );
-    });
-    props.update();
+      setExpanded(ex => {
+        return !ex;
+      });
+      GetAllCrimes().then(Crime => {
+        setCrimes(
+          Crime.map(cri => {
+            return {
+              id: cri.id,
+              data: cri.data,
+              descricao: cri.descricao,
+              bairro: cri.bairro.nome,
+              criminosos: cri.criminosos.map(i => i.nome).toString(),
+              quadrilhas: cri.quadrilhas.map(i => i.nome).toString()
+            };
+          })
+        );
+      });
+      props.update();
+      setData("");
+      setDescricao("");
+      setQuaselected("");
+      setBairroSelected("");
+      setQuadrilha_list([]);
+      setCriminosos_list([]);
+      setError(false);
+    }
   };
 
   const options = {
@@ -311,6 +334,7 @@ const Crimes = props => {
           <Grid container style={{ padding: 10 }}>
             <TextField
               type="date"
+              autoFocus
               InputLabelProps={{
                 shrink: true
               }}
@@ -419,7 +443,7 @@ const Crimes = props => {
                         className={classes.chip}
                       />
                     ))
-                  : null}
+                  : "Nenhum criminoso adicionado até o momento"}
               </Grid>
             </Grid>
             <Grid container alignItems="flex-end" style={{ marginTop: 12 }}>
@@ -490,8 +514,13 @@ const Crimes = props => {
                       className={classes.chip}
                     />
                   ))
-                : null}
+                : "Nenhuma quadrilha adicionada até o momento"}
             </Grid>
+            {error ? (
+              <Typography variant="caption" style={{ color: "red" }}>
+                Preencha todos os campos
+              </Typography>
+            ) : null}
             <Button
               style={{
                 margin: "10px 0px",

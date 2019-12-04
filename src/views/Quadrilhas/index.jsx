@@ -117,6 +117,15 @@ const getMuiTheme = () =>
         root: {
           padding: "0 !important"
         }
+      },
+      MUIDataTableSearch: {
+        searchText: {
+          backgroundColor: "white !important",
+          height: "50%"
+        },
+        main: {
+          alignItems: "center"
+        }
       }
     }
   });
@@ -172,6 +181,7 @@ const Quadrilhas = props => {
     { name: "nome", label: "Nome" }
   ]);
   const [expanded, setExpanded] = React.useState(false);
+  const [error, setError] = React.useState(false);
 
   const handleExpandClick = () => {
     setExpanded(ex => {
@@ -180,21 +190,31 @@ const Quadrilhas = props => {
   };
 
   const handleClick = async () => {
-    await AddQuadrilha(criminosos_list, [0], nome);
-    setIsForm(false);
-    GetAllQuadrilhas().then(Quadrilha => {
-      setQuadrilhas(
-        Quadrilha.map(qua => {
-          return {
-            id: qua.id,
-            nome: qua.nome,
-            cpfs: qua.integrantes.map(i => i.cpf).toString(),
-            nomes: qua.integrantes.map(i => i.nome).toString()
-          };
-        })
-      );
-    });
-    props.update();
+    if (nome === "") {
+      setError(true);
+    } else if (nome.trim().length === 0) {
+      setError(true);
+    } else {
+      await AddQuadrilha(criminosos_list, [0], nome);
+      setIsForm(false);
+      GetAllQuadrilhas().then(Quadrilha => {
+        setQuadrilhas(
+          Quadrilha.map(qua => {
+            return {
+              id: qua.id,
+              nome: qua.nome,
+              cpfs: qua.integrantes.map(i => i.cpf).toString(),
+              nomes: qua.integrantes.map(i => i.nome).toString()
+            };
+          })
+        );
+      });
+      props.update();
+      setCPFselected("");
+      setNome("");
+      setCriminosos_list([]);
+      setError(false);
+    }
   };
 
   const getInfo = () => {
@@ -271,8 +291,9 @@ const Quadrilhas = props => {
         <Grid item xs={12}>
           <Grid container style={{ padding: 10 }}>
             <TextField
-              style={{ display: "block" }}
+              style={{ display: "block", color: "black !important" }}
               fullWidth
+              autoFocus
               label="Nome"
               value={nome}
               onChange={e => {
@@ -348,7 +369,11 @@ const Quadrilhas = props => {
                   ))
                 : "Nenhum CPF adicionado até o momento"}
             </Grid>
-
+            {error ? (
+              <Typography variant="caption" style={{ color: "red" }}>
+                Preencha todos os campos
+              </Typography>
+            ) : null}
             <Button
               style={{
                 margin: "10px 0px",

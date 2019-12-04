@@ -199,8 +199,8 @@ const Crimes = props => {
     { name: "data", label: "Data" },
     { name: "descricao", label: "Descricao" },
     { name: "bairro", label: "Bairro" },
-    { name: "quadrilhas", label: "Quadrilhas" },
-    { name: "criminosos", label: "Criminosos" }
+    { name: "criminosos", label: "Criminosos" },
+    { name: "quadrilhas", label: "Quadrilhas" }
   ]);
   const [expanded, setExpanded] = React.useState(false);
   const [error, setError] = React.useState(false);

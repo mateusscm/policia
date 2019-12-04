@@ -176,9 +176,9 @@ const Quadrilhas = props => {
   const [criminosos, setCriminosos] = useState([]);
   const [cpf, setCpf] = useState("");
   const [columns] = useState([
-    { name: "cpfs", label: "CPF dos integrantes" },
+    { name: "nome", label: "Quadrilha" },
     { name: "nomes", label: "Nome dos integrantes" },
-    { name: "nome", label: "Nome" }
+    { name: "cpfs", label: "CPF dos integrantes" }
   ]);
   const [expanded, setExpanded] = React.useState(false);
   const [error, setError] = React.useState(false);
